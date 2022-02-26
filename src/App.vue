@@ -1,12 +1,36 @@
 <script setup lang="ts">
-// This starter template is using Vue 3 <script setup> SFCs
-// Check out https://v3.vuejs.org/api/sfc-script-setup.html#sfc-script-setup
-import HelloWorld from './components/HelloWorld.vue'
+import { ref, reactive, onMounted } from 'vue';
+import {getHttpList} from './http'
+// import ToList from './components/ToList/index'
+interface TODOS {
+  id?: string | number,
+  name: string
+}
+const state = reactive<{list: TODOS[]}>({list: []})
+const removeItem = (index: number) => {
+  state.list.splice(index, 1)
+}
+const addItem = () => {
+  const i = <number>state.list[state.list.length - 1].id
+  state.list.unshift({
+    id: i + 1,
+    name: 'aaaa'
+  })
+}
+onMounted(() => {
+  getHttpList().then(res => {
+    console.log(res);
+    const _list = res.data.list
+    state.list = _list
+  })
+})
 </script>
 
 <template>
   <img alt="Vue logo" src="./assets/logo.png" />
-  <HelloWorld msg="Hello Vue 3 + TypeScript + Vite" />
+  <a-button type="primary" @click="addItem">add</a-button>
+  <ToList :list="state.list" @removeItem="removeItem"/>
+  
 </template>
 
 <style>
