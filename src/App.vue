@@ -30,7 +30,7 @@ onMounted(() => {
   <img alt="Vue logo" src="./assets/logo.png" />
   <a-button type="primary" @click="addItem">add</a-button>
   <ToList :list="state.list" @removeItem="removeItem"/>
-  
+  <router-view />
 </template>
 
 <style>
